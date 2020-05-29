@@ -30,7 +30,7 @@ class Promise {
 
     /**
      * constructor 构造函数
-     * @param {Functiuon} fn
+     * @param {Function} fn
      */
     constructor(fn) {
         // pending, fulfilled, rejected
@@ -141,8 +141,8 @@ class Promise {
         let nextPromise = new Promise();
         this.nextPromise = nextPromise;
 
-        onFulfilled !== 'function' ? null : onFulfilled;
-        onRejected !== 'function' ? null : onRejected;
+        onFulfilled = onFulfilled !== 'function' ? null : onFulfilled;
+        onRejected = onRejected !== 'function' ? null : onRejected;
 
         if (!onFulfilled && !onRejected) {
             return nextPromise;
@@ -191,6 +191,7 @@ class Promise {
         return this.then(null, onRejected);
     }
 
+    // TODO 无法通过 Promise.all 来使用
     all(fns) {
         let results = [];
         let promiseCount = 0;

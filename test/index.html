@@ -21,6 +21,10 @@
         }, 2000);
     });
 
+    Promise.all([promise, promise2]).then(data => {
+        console.log(data)
+    })
+
     const promise3 = new Promise((resolve, reject) => {
         setTimeout(() => {
             reject({number: 2});
