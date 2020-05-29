@@ -1,5 +1,5 @@
 /**
- * ES6 Promise 
+ * ES6 Promise
  */
 class Promise {
     /**
@@ -7,8 +7,8 @@ class Promise {
      * 1. then 方法可以返回普通值，也可以返回一个 Promise 对象
      * 2. 如果 then 方法返回的是一个 Promise 对象，则会根据这个 Promise 对象里执行的是 resolve 还是 reject 走后一个 then 方法的成功和失败回调
      * 3. 如果 then 方法返回的是一个普通值（无论走的成功还是失败），那么这个普通值就会被当做下一个 then 里成功回调函数的参数
-     * @param {*} promise 
-     * @param {*} value 
+     * @param {*} promise
+     * @param {*} value
      */
     static execute(promise, value) {
         if (!promise) {
@@ -30,7 +30,7 @@ class Promise {
 
     /**
      * constructor 构造函数
-     * @param {Functiuon} fn 
+     * @param {Functiuon} fn
      */
     constructor(fn) {
         // pending, fulfilled, rejected
@@ -56,7 +56,7 @@ class Promise {
             let resolve = this.resolve.bind(this);
             let reject = this.reject.bind(this);
 
-            // 考虑到执行 fn 的过程中有可能出错，所以我们用 try/catch 块给包起来，并且在出错后以 catch 到的值传入 reject 
+            // 考虑到执行 fn 的过程中有可能出错，所以我们用 try/catch 块给包起来，并且在出错后以 catch 到的值传入 reject
             try {
                 fn(resolve, reject);
             } catch (e) {
@@ -112,7 +112,7 @@ class Promise {
         this.state = 'rejected';
         this.err = err;
 
-        // 没有 then 函数了 
+        // 没有 then 函数了
         if (!this.nextPromise) {
             return;
         }
@@ -191,11 +191,40 @@ class Promise {
         return this.then(null, onRejected);
     }
 
-    // TODO
-    all() {}
+    all(fns) {
+        let results = [];
+        let promiseCount = 0;
+        let promisesLength = fns.length;
+        return new Promise((resolve, reject) => {
+            for (let fn of fns) {
+                fn.then(res => {
+                    results[promiseCount] = res;
+                    promiseCount++;
+                    if (promiseCount === promisesLength) {
+                        return resolve(results);
+                    }
+                }, err => {
+                    return reject(err);
+                });
+            }
+        });
+    }
 
-    // TODO
-    race() {}
+    race(fns) {
+        return new Promise((resolve, reject) => {
+            function resolver(value) {
+                resolve(value);
+            }
+
+            function rejecter(reason) {
+                reject(reason);
+            }
+
+            for (let fn of fns) {
+                fn.then(resolver, rejecter)
+            }
+        });
+    }
 }
 
 // module.exports = Promise;
