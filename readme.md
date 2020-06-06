@@ -2,7 +2,7 @@
 
 使用 ES6 语法实现的 Promise 函数。
 
-## Promises/A+ 规范 
+## Promises/A+ 规范
 
 [Promises/A+](https://promisesaplus.com/)
 
@@ -24,7 +24,7 @@ Promise 表示一个异步操作的最终结果，与之进行交互的方式主
 
 处于拒绝态时，不能迁移至其他任何状态，必须拥有一个不可变的据因。
 
-> 注意 promsie 的状态，只能由 pending 到 fulfilled/rejected, 状态一旦修改就不能再改变。
+> 注意 promise 的状态，只能由 pending 到 fulfilled/rejected, 状态一旦修改就不能再改变。
 
 ### 术语名词解析
 
@@ -67,7 +67,7 @@ promise.then(onFulfilled, onRejected)
 
 + promise.all
 
-+ promise.race 
++ promise.race
 
 > promise.catch / promise.all / promise.race 非 promise/A+ 规范要求，通常为各个库函数各自补充添加
 
@@ -84,3 +84,9 @@ var promise = new Promise((resolve, reject) => {
 
 });
 ```
+
+## 常见的面试题
+- 定时返回 resolve，比如在 5s 后返回 resolve
+- 实现失败后重试n次，n次不行就reject
+- 实现失败后定时重试
+- 拓展后，就是 async/await 的理解以及内部原理
